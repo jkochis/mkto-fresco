@@ -39,7 +39,7 @@ A TypeScript-based solution to sync email activity data from Marketo to Alfresco
 
 1. Clone this repository:
    ```bash
-   git clone <your-repo-url>
+   git clone [https://github.com/jkochis/mkto-fresco](https://github.com/jkochis/mkto-fresco)
    cd mkto-fresco
    ```
 
