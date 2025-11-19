@@ -1,0 +1,44 @@
+{
+  "name": "mkto-fresco",
+  "version": "1.0.0",
+  "description": "Sync email activity data from Marketo to Alfresco for long-term retention",
+  "main": "dist/sync.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/sync.js",
+    "dev": "ts-node src/sync.ts",
+    "test": "jest",
+    "lint": "eslint src --ext .ts",
+    "type-check": "tsc --noEmit"
+  },
+  "keywords": [
+    "marketo",
+    "alfresco",
+    "sync",
+    "github-actions"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.7.9",
+    "dotenv": "^16.4.7",
+    "date-fns": "^4.1.0",
+    "form-data": "^4.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.17.10",
+    "@types/jest": "^29.5.14",
+    "@typescript-eslint/eslint-plugin": "^8.17.0",
+    "@typescript-eslint/parser": "^8.17.0",
+    "eslint": "^8.57.1",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.2.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.2"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=9.0.0"
+  },
+  "packageManager": "pnpm@9.0.0"
+}

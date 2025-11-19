@@ -1,0 +1,109 @@
+name: Marketo to Alfresco Sync
+
+on:
+  # Run daily at 2 AM UTC
+  schedule:
+    - cron: '0 2 * * *'
+
+  # Allow manual trigger
+  workflow_dispatch:
+    inputs:
+      log_level:
+        description: 'Log level'
+        required: false
+        default: 'INFO'
+        type: choice
+        options:
+          - DEBUG
+          - INFO
+          - WARN
+          - ERROR
+
+permissions:
+  contents: read
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build TypeScript
+        run: pnpm run build
+
+      - name: Run sync
+        env:
+          MARKETO_CLIENT_ID: ${{ secrets.MARKETO_CLIENT_ID }}
+          MARKETO_CLIENT_SECRET: ${{ secrets.MARKETO_CLIENT_SECRET }}
+          MARKETO_ENDPOINT: ${{ secrets.MARKETO_ENDPOINT }}
+          ALFRESCO_URL: ${{ secrets.ALFRESCO_URL }}
+          ALFRESCO_USERNAME: ${{ secrets.ALFRESCO_USERNAME }}
+          ALFRESCO_PASSWORD: ${{ secrets.ALFRESCO_PASSWORD }}
+          ALFRESCO_BASE_PATH: ${{ secrets.ALFRESCO_BASE_PATH }}
+          LOG_LEVEL: ${{ inputs.log_level || 'INFO' }}
+          SYNC_LOOKBACK_DAYS: ${{ vars.SYNC_LOOKBACK_DAYS || '90' }}
+          SYNC_BATCH_SIZE: ${{ vars.SYNC_BATCH_SIZE || '50' }}
+        run: pnpm start
+
+      - name: Upload failed emails list (if any)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: failed-emails-${{ github.run_number }}
+          path: |
+            failed-emails.json
+          retention-days: 30
+          if-no-files-found: ignore
+
+      - name: Create workflow summary
+        if: always()
+        run: |
+          echo "## Sync Summary" >> $GITHUB_STEP_SUMMARY
+          echo "- Run ID: ${{ github.run_id }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Run Number: ${{ github.run_number }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Triggered by: ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Status: ${{ job.status }}" >> $GITHUB_STEP_SUMMARY
+          if [ -f sync-result.json ]; then
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "### Details" >> $GITHUB_STEP_SUMMARY
+            cat sync-result.json >> $GITHUB_STEP_SUMMARY
+          fi
+
+      # Optional: Send notification on failure
+      # Uncomment and configure if you want Slack notifications
+      # - name: Notify on failure
+      #   if: failure()
+      #   uses: slackapi/slack-github-action@v1
+      #   with:
+      #     payload: |
+      #       {
+      #         "text": "Marketo to Alfresco sync failed",
+      #         "blocks": [
+      #           {
+      #             "type": "section",
+      #             "text": {
+      #               "type": "mrkdwn",
+      #               "text": ":x: Marketo to Alfresco sync failed\n*Run:* <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|#${{ github.run_number }}>"
+      #             }
+      #           }
+      #         ]
+      #       }
+      #   env:
+      #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
