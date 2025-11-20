@@ -1,5 +1,13 @@
 # Marketo to Alfresco Sync
 
+[![GitHub Actions](https://img.shields.io/github/actions/workflow/status/jkochis/mkto-fresco/sync.yml?branch=main&logo=github&label=sync)](https://github.com/jkochis/mkto-fresco/actions)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue?logo=typescript)](https://www.typescriptlang.org/)
+[![Node.js](https://img.shields.io/badge/Node.js-20+-green?logo=node.js)](https://nodejs.org/)
+[![pnpm](https://img.shields.io/badge/pnpm-9+-orange?logo=pnpm)](https://pnpm.io/)
+[![Tests](https://img.shields.io/badge/tests-109%20passing-success)](https://github.com/jkochis/mkto-fresco)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Code Style](https://img.shields.io/badge/code%20style-eslint-brightgreen?logo=eslint)](https://eslint.org/)
+
 A TypeScript-based solution to sync email activity data from Marketo to Alfresco for long-term retention and archival.
 
 ## Features
