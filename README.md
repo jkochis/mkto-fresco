@@ -154,22 +154,31 @@ To manually trigger the sync in GitHub Actions:
 mkto-fresco/
 ├── .github/
 │   └── workflows/
-│       └── sync.yml           # GitHub Actions workflow
+│       └── sync.yml               # GitHub Actions workflow
 ├── src/
 │   ├── marketo/
-│   │   ├── client.ts          # Marketo API client
-│   │   └── types.ts           # Marketo TypeScript types
+│   │   ├── client.ts              # Marketo API client
+│   │   ├── client.test.ts         # Marketo client tests
+│   │   └── types.ts               # Marketo TypeScript types
 │   ├── alfresco/
-│   │   ├── client.ts          # Alfresco API client
-│   │   └── types.ts           # Alfresco TypeScript types
+│   │   ├── client.ts              # Alfresco API client
+│   │   ├── client.test.ts         # Alfresco client tests
+│   │   └── types.ts               # Alfresco TypeScript types
 │   ├── utils/
-│   │   ├── date.ts            # Date utilities
-│   │   ├── logger.ts          # Logging utilities
-│   │   └── retry.ts           # Retry logic with backoff
-│   ├── config.ts              # Configuration management
-│   └── sync.ts                # Main sync orchestration
+│   │   ├── date.ts                # Date utilities
+│   │   ├── date.test.ts           # Date utilities tests
+│   │   ├── logger.ts              # Logging utilities
+│   │   ├── logger.test.ts         # Logger tests
+│   │   ├── retry.ts               # Retry logic with backoff
+│   │   └── retry.test.ts          # Retry logic tests
+│   ├── config.ts                  # Configuration management
+│   ├── config.test.ts             # Config tests
+│   ├── sync.ts                    # Main sync orchestration
+│   └── sync.test.ts               # Sync orchestration tests
 ├── package.json
 ├── tsconfig.json
+├── jest.config.js                 # Jest test configuration
+├── .eslintrc.js                   # ESLint configuration
 ├── .env.example
 └── README.md
 ```

@@ -68,9 +68,10 @@ describe('Config', () => {
     process.env.MARKETO_CLIENT_ID = 'test-client-id';
     // Missing MARKETO_CLIENT_SECRET
 
-    const { loadConfig } = require('./config');
-
-    expect(() => loadConfig()).toThrow(/MARKETO_CLIENT_SECRET/);
+    // Module initialization will throw error when trying to load config
+    expect(() => {
+      const { loadConfig } = require('./config');
+    }).toThrow(/MARKETO_CLIENT_SECRET/);
   });
 
   it('should throw error for invalid numeric variables', () => {
@@ -82,9 +83,10 @@ describe('Config', () => {
     process.env.ALFRESCO_PASSWORD = 'testpass';
     process.env.SYNC_LOOKBACK_DAYS = 'not-a-number';
 
-    const { loadConfig } = require('./config');
-
-    expect(() => loadConfig()).toThrow(/must be a number/);
+    // Module initialization will throw error when trying to load config
+    expect(() => {
+      const { loadConfig } = require('./config');
+    }).toThrow(/must be a number/);
   });
 
   it('should load config structure correctly', () => {

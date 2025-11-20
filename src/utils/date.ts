@@ -11,7 +11,8 @@ export function toISOString(date: Date): string {
  * Format a date for Marketo API (YYYY-MM-DDTHH:mm:ssZ)
  */
 export function toMarketoFormat(date: Date): string {
-  return format(date, "yyyy-MM-dd'T'HH:mm:ss'Z'");
+  // Use toISOString and remove milliseconds
+  return date.toISOString().replace(/\.\d{3}Z$/, 'Z');
 }
 
 /**

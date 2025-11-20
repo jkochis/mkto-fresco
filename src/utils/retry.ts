@@ -79,16 +79,10 @@ export function isRetryableError(error: unknown): boolean {
     }
   }
 
-  // HTTP 5xx errors (if error has a status property)
+  // HTTP 5xx errors and rate limiting (429)
   if (typeof error === 'object' && error !== null && 'status' in error) {
     const status = (error as { status: number }).status;
-    return status >= 500 && status < 600;
-  }
-
-  // Rate limiting (429)
-  if (typeof error === 'object' && error !== null && 'status' in error) {
-    const status = (error as { status: number }).status;
-    return status === 429;
+    return (status >= 500 && status < 600) || status === 429;
   }
 
   return false;
